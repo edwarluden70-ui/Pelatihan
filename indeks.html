@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pelatihan Mengetik Tunanetra - BPVP Sorong</title>
+    <style>
+        :root {
+            --bg-main: #e0f2fe; /* Biru langit cerah */
+            --bg-card: #ffffff; /* Putih bersih */
+            --bg-modul: #0284c7; /* Biru cerah format komponen */
+            --accent-blue: #0369a1; /* Biru safir tulisan */
+            --accent-gold: #b45309; /* Amber hangat untuk sorotan */
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --border-color: #bae6fd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.1);
+            border: 2px solid var(--border-color);
+        }
+
+        /* Container Logo Pendukung */
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo-instansi {
+            max-height: 100px; /* Ukuran tinggi logo ideal */
+            width: auto;
+            object-fit: contain;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        header h2 {
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .creator-badge {
+            display: inline-block;
+            background-color: #0c4a6e;
+            color: #f0f9ff;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Tombol Emergency Stop */
+        .global-controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-stop:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5);
+        }
+
+        /* SELEKTOR PILIHAN DURASI JP */
+        .jp-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .jp-selector-grid { grid-template-columns: 1fr; }
+        }
+
+        .jp-btn {
+            background-color: var(--bg-card);
+            border: 3px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px 25px;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.05);
+        }
+
+        .jp-btn:hover {
+            border-color: var(--bg-modul);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(2, 132, 199, 0.15);
+        }
+
+        .jp-btn.active {
+            border-color: #0284c7;
+            background: linear-gradient(135deg, #ffffff, #e0f2fe);
+            box-shadow: 0 15px 30px rgba(2, 132, 199, 0.2);
+            position: relative;
+        }
+
+        .jp-btn.active::after {
+            content: '✓ Aktif';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #0284c7;
+            color: white;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 50px;
+        }
+
+        .jp-btn h3 {
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .jp-btn .badge {
+            font-size: 0.85rem;
+            background-color: #fef3c7;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .jp-btn p {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* AREA STRUKTUR UNIT KOMPETENSI (SEMBUNYI DI AWAL) */
+        .workspace {
+            background-color: var(--bg-card);
+            border-radius: 24px;
+            padding: 40px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.08);
+            display: none; 
+        }
+
+        .workspace-title {
+            font-size: 1.8rem;
+            border-bottom: 3px solid var(--bg-main);
+            padding-bottom: 15px;
+            margin-bottom: 35px;
+            color: var(--accent-blue);
+        }
+
+        .unit-kompetensi-box {
+            background-color: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .unit-title {
+            font-size: 1.3rem;
+            color: #0369a1;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* GRID UNTUK MODUL SUARA */
+        .modul-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .modul-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid #e2e8f0;
+            transition: border-color 0.2s;
+        }
+
+        .modul-card:hover {
+            border-color: var(--bg-modul);
+        }
+
+        .modul-info h4 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .modul-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .btn-speak {
+            background-color: var(--bg-modul);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
+        }
+
+        .btn-speak:hover {
+            background-color: var(--accent-blue);
+            box-shadow: 0 6px 14px rgba(3, 105, 161, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <!-- Logo Instansi Terintegrasi -->
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo Balai Pelatihan Vokasi dan Produktivitas Sorong" class="logo-instansi" onerror="this.style.display='none'; console.log('Silakan letakkan file logo.png di folder yang sama')">
+        </div>
+        <h1>Balai Pelatihan Vokasi dan Produktivitas Sorong</h1>
+        <h2>Sistem Aplikasi Pelatihan Mengetik Tunanetra</h2>
+        <div class="creator-badge">Pengembang Sistem: Helmi Palpialy S.T</div>
+        <p>Silakan pilih durasi jam pelajaran (JP) di bawah untuk memuat kurikulum materi audio instruksional.</p>
+    </header>
+
+    <div class="global-controls">
+        <button class="btn-stop" onclick="hentikanSuara()">🛑 Hentikan Semua Suara (Stop Audio)</button>
+    </div>
+
+    <!-- Pilihan Durasi Terisolasi -->
+    <div class="jp-selector-grid">
+        <div class="jp-btn" id="btn-40" onclick="pilihDurasi(40)">
+            <h3>⏱️ 40 JP</h3>
+            <span class="badge">Tingkat: Dasar</span>
+            <p>Sesi kilat fokus orientasi spasial luar keyboard, pangkalan rumah jari (Home Row), dan pengetikan kata tunggal pendek.</p>
+        </div>
+        <div class="jp-btn" id="btn-80" onclick="pilihDurasi(80)">
+            <h3>⏱️ 80 JP</h3>
+            <span class="badge">Tingkat: Menengah</span>
+            <p>Paket dasar ditambah manuver vertikal baris atas dan bawah, angka numerik taktil, serta eksekusi tombol Shift kapital.</p>
+        </div>
+        <div class="jp-btn" id="btn-120" onclick="pilihDurasi(120)">
+            <h3>⏱️ 120 JP</h3>
+            <span class="badge">Tingkat: Mahir</span>
+            <p>Akses kurikulum penuh hingga optimalisasi sistem navigasi berkas, blind drilling kecepatan, dan simulasi dokumen administrasi perkantoran.</p>
+        </div>
+    </div>
+
+    <!-- Workspace Kurikulum -->
+    <div class="workspace" id="workspace-kurikulum">
+        <h2 class="workspace-title" id="judul-paket-aktif">Struktur Kurikulum</h2>
+        <div id="area-unit-kompetensi">
+            <!-- Di-render oleh JS -->
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Balai Pelatihan Vokasi dan Produktivitas Sorong. All Rights Reserved.<br>
+        <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-muted);">Sistem Aplikasi Dirancang dan Dikembangkan oleh Helmi Palpialy S.T</span>
+    </footer>
+</div>
+
+<script>
+    // Database Kurikulum Berbasis Kompetensi BPVP Sorong
+    const databaseKurikulum = {
+        40: [
+            {
+                unitKode: "UK-01",
+                unitNama: "Pengenalan Anatomi Keyboard & Postur Ergonomis",
+                modulList: [
+                    { nama: "Modul 1: Orientasi Batas Meja", desc: "Mengenali batas aman tepi meja dan posisi keyboard.", audio: "Selamat datang di Balai Pelatihan Vokasi dan Produktivitas Sorong. Modul Satu. Letakkan kedua tangan Anda secara datar di pinggiran meja. Geser maju perlahan sampai Anda merasakan batas plastik luar dari keyboard Anda. Ini adalah batas orientasi depan ruang kerja Anda." },
+                    { nama: "Modul 2: Eksplorasi Sisi Kiri & Kanan", desc: "Menemukan titik ujung terluar sebelah kiri dan kanan.", audio: "Modul Dua. Bentangkan tangan kiri ke ujung paling kiri, dan tangan kanan ke ujung paling kanan. Rasakan sudut plastik pembatas keyboard Anda. Jarak di antara kedua tangan Anda saat ini adalah area lebar keyboard." },
+                    { nama: "Modul 3: Posisi Duduk Tegak Ergonomis", desc: "Instruksi cara duduk agar tidak cepat lelah.", audio: "Modul Tiga. Pastikan punggung Anda bersandar tegak lurus pada kursi. Lemaskan pundak, dan biarkan siku membentuk sudut sembilan puluh derajat. Posisi ini menjaga Anda tetap fokus selama mengetik." }
+                ]
+            },
+            {
+                unitKode: "UK-02",
+                unitNama: "Penguasaan Baris Rumah (Home Row)",
+                modulList: [
+                    { nama: "Modul 4: Menemukan Tombol Jangkar F dan J", desc: "Mencari benjolan taktil pada huruf F dan J.", audio: "Modul Empat. Gunakan jari telunjuk tangan kiri untuk meraba tombol di area tengah kiri, temukan garis timbul kecil di huruf F. Sekarang gunakan telunjuk kanan untuk mencari benjolan serupa di huruf J. Ini adalah kompas utama Anda." },
+                    { nama: "Modul 5: Penempatan Delapan Jari Standby", desc: "Menyusun jari-jari di samping tombol F dan J.", audio: "Modul Lima. Pertahankan telunjuk di huruf F dan J. Letakkan jari tengah kiri di huruf D, jari manis di S, dan kelingking di A. Untuk tangan kanan, letakkan jari tengah di K, jari manis di L, dan kelingking di titik koma." },
+                    { nama: "Modul 6: Ketukan Tombol Spasi", desc: "Penggunaan ibu jari untuk pemisah kata.", audio: "Modul Enam. Istirahatkan kedua ibu jari Anda di atas tombol horizontal paling panjang di bagian bawah. Tekan lembut menggunakan ibu jari kanan atau kiri untuk memberikan jarak antar-kata." },
+                    { nama: "Modul 7: Simulasi Ketik Kata Rumah Jari", desc: "Latihan kombinasi huruf baris tengah.", audio: "Modul Tujuh. Mari latihan mengetik kombinasi baris tengah. Silakan raba dan tekan secara berurutan huruf A, S, D, F, lalu beri spasi. Ulangi proses ini dengan konsentrasi penuh." }
+                ]
+            }
+        ],
+        80: [],
+        120: []
+    };
+
+    // Integrasi Modul Bertahap
+    databaseKurikulum[80] = [
+        ...databaseKurikulum[40],
+        {
+            unitKode: "UK-03",
+            unitNama: "Eksplorasi Vertikal Baris Atas (Top Row) & Baris Bawah",
+            modulList: [
+                { nama: "Modul 8: Jangkauan Jari Baris Atas", desc: "Melatih jari naik satu langkah ke huruf Q hingga P.", audio: "Modul Delapan. Dari posisi rumah jari, gerakkan jari telunjuk kiri Anda naik satu langkah ke depan, itu adalah huruf R. Lakukan hal yang sama untuk telunjuk kanan maju ke depan untuk menekan huruf U." },
+                { nama: "Modul 9: Jangkauan Jari Baris Bawah", desc: "Melatih jari turun satu langkah ke huruf Z hingga M.", audio: "Modul Sembilan. Sekarang kita berlatih baris bawah. Gerakkan telunjuk kiri Anda mundur satu langkah ke belakang bawah untuk menekan huruf V. Dan telunjuk kanan mundur ke belakang bawah untuk huruf N." },
+                { nama: "Modul 10: Tombol Penghapus (Backspace)", desc: "Menghapus kesalahan teks di ujung kanan atas.", audio: "Modul Sepuluh. Jika Anda melakukan kesalahan ketik, gunakan jari kelingking kanan Anda untuk menjangkau tombol di pojok kanan atas baris huruf, yaitu tombol Backspace untuk menghapus satu karakter." }
+            ]
+        },
+        {
+            unitKode: "UK-04",
+            unitNama: "Aksentuasi Kalimat, Baris Angka & Tanda Baca",
+            modulList: [
+                { nama: "Modul 11: Penguasaan Tombol Shift Kapital", desc: "Membuat huruf besar menggunakan kombinasi kelingking.", audio: "Modul Sebelas. Untuk membuat huruf kapital, tahan tombol Shift di ujung kiri bawah menggunakan jari kelingking kiri Anda, lalu tekan huruf yang diinginkan di area tangan kanan menggunakan jari tangan kanan." },
+                { nama: "Modul 12: Pengetikan Angka Taktil", desc: "Menjangkau baris nomor 1 sampai 0.", audio: "Modul Dua Belas. Baris angka terletak di atas baris huruf teratas. Jangkau menggunakan jari tengah Anda ke area paling depan untuk menekan angka secara berurutan dari kiri ke kanan." },
+                { nama: "Modul 13: Penulisan Tanda Titik dan Koma", desc: "Menyisipkan tanda baca di baris bawah kanan.", audio: "Modul Tiga Belas. Tanda koma terletak di sebelah kanan huruf M, gunakan jari tengah kanan Anda. Tanda titik berada di sebelah kanan koma, gunakan jari manis kanan Anda." }
+            ]
+        }
+    ];
+
+    databaseKurikulum[120] = [
+        ...databaseKurikulum[80],
+        {
+            unitKode: "UK-05",
+            unitNama: "Sistem Kemudi Navigasi & Integrasi Pembaca Layar",
+            modulList: [
+                { nama: "Modul 14: Penguasaan Tombol Panah", desc: "Navigasi kursor teks di area kanan bawah.", audio: "Modul Empat Belas. Geser tangan kanan Anda ke sudut kanan bawah yang terpisah. Rasakan susunan empat tombol berbentuk huruf T terbalik. Gunakan ini untuk mengontrol jalannya kursor teks ke atas, bawah, kiri, dan kanan." },
+                { nama: "Modul 15: Eksekusi Tombol Enter", desc: "Fungsi membuat baris baru atau konfirmasi.", audio: "Modul Lima Belas. Tombol Enter berukuran cukup besar, terletak di sebelah kanan baris tengah. Gunakan kelingking kanan untuk menekannya kapan pun Anda ingin membuat paragraf baru." },
+                { nama: "Modul 16: Berpindah Jendela dengan Alt + Tab", desc: "Navigasi antar program aplikasi sistem komputer.", audio: "Modul Enam Belas. Tahan tombol Alt di sebelah kiri spasi menggunakan ibu jari kiri, lalu ketuk tombol Tab di ujung kiri menggunakan kelingking kiri untuk berpindah aplikasi secara mandiri." }
+            ]
+        },
+        {
+            unitKode: "UK-06",
+            unitNama: "Akurasi Profesional & Simulasi Dokumen Kerja Kantor",
+            modulList: [
+                { nama: "Modul 17: Uji Kecepatan Dikte Berkelanjutan", desc: "Latihan mendengarkan kata dan mengetik tanpa henti.", audio: "Modul Tujuh Belas. Pada tahap mahir ini, instruktur BPVP Sorong akan mendiktekan sebuah kalimat panjang. Konsentrasi pada suara saya, letakkan tangan di posisi rumah jari, dan ketik kata per kata dengan akurasi tinggi tanpa melihat keyboard." },
+                { nama: "Modul 18: Pembuatan Surat Resmi Standard", desc: "Simulasi mengetik dokumen surat kerja perkantoran.", audio: "Modul Delapan Belas. Anda akan dilatih menyusun draf surat formal. Gunakan kombinasi tombol Caps lock, nomor surat dengan angka, dan navigasi panah untuk memeriksa kembali draf dokumen." }
+            ]
+        }
+    ];
+
+    function renderKurikulum(durasi) {
+        const areaUnit = document.getElementById('area-unit-kompetensi');
+        areaUnit.innerHTML = ""; 
+
+        const daftarUnit = databaseKurikulum[durasi];
+
+        daftarUnit.forEach(unit => {
+            const unitBox = document.createElement('div');
+            unitBox.className = 'unit-kompetensi-box';
+
+            const unitTitle = document.createElement('h3');
+            unitTitle.className = 'unit-title';
+            unitTitle.innerHTML = `<span>📘</span> ${unit.unitKode}: ${unit.unitNama}`;
+            unitBox.appendChild(unitTitle);
+
+            const modulGrid = document.createElement('div');
+            modulGrid.className = 'modul-grid';
+
+            unit.modulList.forEach(modul => {
+                const modulCard = document.createElement('div');
+                modulCard.className = 'modul-card';
+
+                modulCard.innerHTML = `
+                    <div class="modul-info">
+                        <h4>${modul.nama}</h4>
+                        <p>${modul.desc}</p>
+                    </div>
+                    <button class="btn-speak" onclick="putarAudioText('${modul.audio}')">🔊 Aktifkan Suara</button>
+                `;
+                modulGrid.appendChild(modulCard);
+            });
+
+            unitBox.appendChild(modulGrid);
+            areaUnit.appendChild(unitBox);
+        });
+    }
+
+    function pilihDurasi(durasi) {
+        document.querySelectorAll('.jp-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${durasi}`).classList.add('active');
+
+        document.getElementById('judul-paket-aktif').innerText = `Struktur Kurikulum: Paket ${durasi} Jam Pelajaran (JP)`;
+
+        renderKurikulum(durasi);
+
+        const workspace = document.getElementById('workspace-kurikulum');
+        workspace.style.display = 'block';
+        workspace.scrollIntoView({ behavior: 'smooth' });
+
+        putarAudioText(`Kurikulum paket ${durasi} jam pelajaran kurikulum B P V P Sorong berhasil dimuat.`);
+    }
+
+    function putarAudioText(teksNarasi) {
+        window.speechSynthesis.cancel(); 
+
+        const speech = new SpeechSynthesisUtterance(teksNarasi);
+        speech.lang = 'id-ID';
+        speech.rate = 0.95;
+        speech.pitch = 1;
+
+        window.speechSynthesis.speak(speech);
+    }
+
+    function hentikanSuara() {
+        window.speechSynthesis.cancel();
+    }
+</script>
+
+</body>
+</html>
